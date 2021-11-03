@@ -1,12 +1,12 @@
 import React from "react";
 import { ChakraProvider, Center } from "@chakra-ui/react";
-import Form from './features/form/Form';
+import FormContainer from './features/form/FormContainer';
 
 function App() {
   return (
     <ChakraProvider>
       <Center minH="100vh">
-        <Form />
+        <FormContainer />
       </Center>
     </ChakraProvider>
   );

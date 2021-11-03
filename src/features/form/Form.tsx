@@ -1,174 +1,144 @@
-import React, { useState } from "react";
+import React from "react";
+import { FormikProps, Field, FieldProps } from "formik";
 
 import {
   Box,
   Button,
-  Divider,
   FormControl,
+  FormErrorMessage,
   FormLabel,
-  Heading,
   Input,
   NumberInput,
   NumberInputField,
-  NumberInputStepper,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
   Select,
-  Slider,
-  SliderTrack,
-  SliderFilledTrack,
-  SliderThumb,
 } from "@chakra-ui/react";
 
-const Form = (): JSX.Element => {
-  const [name, setName] = useState("");
-  const [prepTime, setPrepTime] = useState("");
-  const [type, setType] = useState("");
-  const [pizzaSlices, setPizzaSlices] = useState("");
-  const [diameter, setDiameter] = useState("");
-  const [spicyScale, setSpicyScale] = useState(1);
-  const [breadSlices, setBreadSlices] = useState("");
+import { FormValues } from "./FormContainer";
+interface FormProps extends FormikProps<FormValues> {}
 
-  const handleSubmit = (event: React.MouseEvent<HTMLElement>): void => {
-    event.preventDefault();
-    alert(`Name: ${name}; Preparation time: ${prepTime}; Type: ${type};`);
-    if (type === "pizza") {
-      alert(`Number of slices: ${pizzaSlices}; Diameter: ${diameter}`);
-    }
-    if (type === "soup") {
-        alert(`Spicy scale: ${spicyScale} of 10;`);
-      }
-    if (type === "sandwich") {
-      alert(`Number of slices: ${breadSlices};`);
-    }
-  };
-
+const renderNameField = ({ field, form }: FieldProps) => {
   return (
-    <Box>
-      <Box borderWidth="1px" borderRadius="lg" boxShadow="lg" p={6} w="400px">
-        <Heading as="h1" mb={4} size="md">
-          Submit a dish 🍽
-        </Heading>
-        <Divider mb={4} />
-        <form>
-          <FormControl id="name" isRequired>
-            <FormLabel>Dish name</FormLabel>
-            <Input
-              type="name"
-              placeholder="Spicy BBQ Pizza"
-              onChange={(event: React.ChangeEvent<HTMLInputElement>): void =>
-                setName(event.target.value)
-              }
-            />
-          </FormControl>
-          <FormControl id="preparation_time" mt={4} isRequired>
-            <FormLabel>Preparation time</FormLabel>
-            <Input
-              type="time"
-              step="2"
-              value={prepTime}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>): void =>
-                setPrepTime(event.target.value)
-              }
-            />
-          </FormControl>
-          <FormControl id="type" mt={4} isRequired>
-            <FormLabel>Type of dish</FormLabel>
-            <Select
-              placeholder="Select a type"
-              value={type}
-              onChange={(event: React.ChangeEvent<HTMLSelectElement>): void =>
-                setType(event.target.value)
-              }
-            >
-              <option value="pizza">Pizza 🍕</option>
-              <option value="soup">Soup 🍜</option>
-              <option value="sandwich">Sandwich 🥪</option>
-            </Select>
-          </FormControl>
-          {type === "pizza" && (
-            <>
-              <FormControl id="no_of_slices" mt={4} isRequired>
-                <FormLabel>Amount of slices</FormLabel>
-                <NumberInput max={16} min={2}>
-                  <NumberInputField
-                    value={pizzaSlices}
-                    onChange={(
-                      event: React.ChangeEvent<HTMLInputElement>
-                    ): void => setPizzaSlices(event.target.value)}
-                  />
-                  <NumberInputStepper>
-                    <NumberIncrementStepper />
-                    <NumberDecrementStepper />
-                  </NumberInputStepper>
-                </NumberInput>
-              </FormControl>
-              <FormControl id="diameter" mt={4} isRequired>
-                <FormLabel>Pizza Diameter</FormLabel>
-                <NumberInput>
-                  <NumberInputField
-                    step="0.01"
-                    value={diameter}
-                    onChange={(
-                      event: React.ChangeEvent<HTMLInputElement>
-                    ): void => setDiameter(event.target.value)}
-                  />
-                  <NumberInputStepper>
-                    <NumberIncrementStepper />
-                    <NumberDecrementStepper />
-                  </NumberInputStepper>
-                </NumberInput>
-              </FormControl>
-            </>
-          )}
-          {type === "soup" && (
-            <FormControl id="spiciness_scale" mt={4} isRequired>
-              <FormLabel>Spiciness Scale (out of 10)</FormLabel>
-              <Slider
-                aria-label="slider-ex-1"
-                colorScheme="red"
-                max={10}
-                min={1}
-                onChange={(value: number) => setSpicyScale(value)}
-                value={spicyScale}
-              >
-                <SliderTrack>
-                  <SliderFilledTrack />
-                </SliderTrack>
-                <SliderThumb children={spicyScale} h={25} w={25} />
-              </Slider>
-            </FormControl>
-          )}
-          {type === "sandwich" && (
-            <FormControl id="slices_of_bread" mt={4} isRequired>
-              <FormLabel>Amount of slices</FormLabel>
-              <NumberInput max={12} min={2}>
-                <NumberInputField
-                  value={breadSlices}
-                  onChange={(
-                    event: React.ChangeEvent<HTMLInputElement>
-                  ): void => setBreadSlices(event.target.value)}
-                />
-                <NumberInputStepper>
-                  <NumberIncrementStepper />
-                  <NumberDecrementStepper />
-                </NumberInputStepper>
-              </NumberInput>
-            </FormControl>
-          )}
-          <Button
-            type="submit"
-            colorScheme="red"
-            mt={6}
-            onClick={handleSubmit}
-            variant="solid"
-            w="100%"
-          >
-            Submit
-          </Button>
-        </form>
+    <FormControl isInvalid={!!form.errors.name}>
+      <FormLabel htmlFor="name">Dish name</FormLabel>
+      <Input {...field} id="name" placeholder="Spicy BBQ Pizza" type="text" />
+      <FormErrorMessage>{form.errors.name}</FormErrorMessage>
+    </FormControl>
+  );
+};
+
+const renderPrepTimeField = ({ field, form }: FieldProps) => {
+  return (
+    <FormControl isInvalid={!!form.errors.preparation_time}>
+      <FormLabel htmlFor="preparation_time">Preparation time</FormLabel>
+      <Input {...field} id="preparation_time" placeholder="00:00:00" type="text" />
+      <FormErrorMessage>{form.errors.preparation_time}</FormErrorMessage>
+    </FormControl>
+  );
+};
+
+const renderTypeField = ({ field, form }: FieldProps) => {
+  return (
+    <FormControl isInvalid={!!form.errors.type}>
+      <FormLabel htmlFor="type">Type of dish</FormLabel>
+      <Select {...field} id="type" placeholder="Select a type">
+        <option value="pizza">Pizza 🍕</option>
+        <option value="soup">Soup 🍜</option>
+        <option value="sandwich">Sandwich 🥪</option>
+      </Select>
+      <FormErrorMessage>{form.errors.type}</FormErrorMessage>
+    </FormControl>
+  );
+};
+
+const renderPizzaSlicesField = ({ field, form }: FieldProps) => {
+  return (
+    <FormControl isInvalid={!!form.errors.no_of_slices}>
+      <FormLabel htmlFor="no_of_slices">Amount of slices</FormLabel>
+      <NumberInput>
+        <NumberInputField {...field} id="no_of_slices" />
+      </NumberInput>
+      <FormErrorMessage>{form.errors.no_of_slices}</FormErrorMessage>
+    </FormControl>
+  );
+};
+
+const renderDiameterField = ({ field, form }: FieldProps) => {
+  return (
+    <FormControl isInvalid={!!form.errors.diameter}>
+      <FormLabel htmlFor="diameter">Pizza diameter</FormLabel>
+      <NumberInput>
+        <NumberInputField {...field} id="diameter" />
+      </NumberInput>
+      <FormErrorMessage>{form.errors.diameter}</FormErrorMessage>
+    </FormControl>
+  );
+};
+
+const renderSpicyScaleField = ({ field, form }: FieldProps) => {
+  return (
+    <FormControl isInvalid={!!form.errors.spiciness_scale}>
+      <FormLabel htmlFor="spiciness_scale">Spiciness scale (from 1 to 10)</FormLabel>
+      <NumberInput>
+        <NumberInputField {...field} id="spiciness_scale" />
+      </NumberInput>
+      <FormErrorMessage>{form.errors.spiciness_scale}</FormErrorMessage>
+    </FormControl>
+  );
+};
+
+const renderBreadSlicesField = ({ field, form }: FieldProps) => {
+  return (
+    <FormControl isInvalid={!!form.errors.slices_of_bread}>
+      <FormLabel htmlFor="slices_of_bread">Amount of bread slices</FormLabel>
+      <NumberInput>
+        <NumberInputField {...field} id="slices_of_bread" />
+      </NumberInput>
+      <FormErrorMessage>{form.errors.slices_of_bread}</FormErrorMessage>
+    </FormControl>
+  )
+}
+
+const Form: React.FC<FormProps> = ({ handleSubmit, values }) => {
+  return (
+    <form onSubmit={handleSubmit}>
+      <Box mb={4}>
+        <Field name="name">{renderNameField}</Field>
       </Box>
-    </Box>
+      <Box mb={4}>
+        <Field name="preparation_time">{renderPrepTimeField}</Field>
+      </Box>
+      <Box mb={4}>
+        <Field name="type">{renderTypeField}</Field>
+      </Box>
+      {values.type === "pizza" ? (
+        <Box mb={4}>
+          <Field name="no_of_slices">{renderPizzaSlicesField}</Field>
+        </Box>
+      ): ""}
+      {values.type === "pizza" ? (
+        <Box mb={4}>
+          <Field name="diameter">{renderDiameterField}</Field>
+        </Box>
+      ): ""}
+      {values.type === "soup" ? (
+        <Box mb={4}>
+          <Field name="spiciness_scale">{renderSpicyScaleField}</Field>
+        </Box>
+      ): ""}
+      {values.type === "sandwich" && (
+        <Box mb={4}>
+          <Field name="slices_of_bread">{renderBreadSlicesField}</Field>
+        </Box>
+      )}
+      <Button
+        colorScheme="red"
+        onClick={() => handleSubmit}
+        type="submit"
+        width="100%"
+      >
+        Submit
+      </Button>
+    </form>
   );
 };
 
