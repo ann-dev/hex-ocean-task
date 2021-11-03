@@ -1,44 +1,49 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) template.
+# Hex Ocean Task Solution
 
-## Available Scripts
+<h2 align="center"><a href="https://hex-ocean-task-anh.netlify.app" target="_blank">🎉 Live Preview</a></h2>
 
-In the project directory, you can run:
+## Description
 
-### `npm start`
+<p>React & TypeScript-based form with Formik/Yup validation. Solution for <a href="https://hexocean.com">Hex OCean</a> recruitment task.
+</p>
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+<h3>Main features:</h3>
+<ul>
+    <li>Conditional rendering of form fields, based on chosen select option</li>
+    <li>Form validation using Yup, with custom error messages</li>
+    <li>Responsive UI built with Chakra UI component library</li>
+</ul>
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+## General Usage
 
-### `npm test`
+### Installation
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+To install all related packages run:
 
-### `npm run build`
+```sh
+npm install
+```
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Development
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+To run the app on a local server use:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```sh
+npm run start
+```
 
-### `npm run eject`
+Linting with Eslint, to check for any TypeScript/JavaScript/React-related errors:
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+```bsh
+npx eslint '*/**/*.{js,ts,tsx}' --fix
+```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+To preview the app, open [http://localhost:3000](http://localhost:3000) in the any browser of choice.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### Production
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+To compile for production build:
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+```sh
+npm run build
+```

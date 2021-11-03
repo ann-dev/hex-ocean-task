@@ -1,16 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import { Formik } from "formik";
 import * as yup from "yup";
+import axios from "axios";
 import { Box, Divider, Heading } from "@chakra-ui/react";
 
 import Form from "./Form";
 
+// chose interface instead of type, for possible future extensions
 export interface FormValues {
   name: string;
   preparation_time: string;
   type: string;
 }
 
+// validation schema for each form field
+// could possibly moved into a separate file?
 const validationSchema = yup.object().shape({
   name: yup.string().required("This field is required"),
   preparation_time: yup
@@ -49,11 +53,30 @@ const validationSchema = yup.object().shape({
   }),
 });
 
+// data POST request with error handling
+const postData = async (values: FormValues) => {
+  alert(JSON.stringify(values, null, 2));
+  try {
+    const response = await axios.post(
+      "https://frosty-wood-6558.getsandbox.com:443/dishes ",
+      values,
+      {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const data = response.data;
+    console.log(data);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// shares global Formik props with children components
 const FormContainer: React.FC = () => {
-  const handleSubmit = (values: FormValues): void => {
-    console.log(values);
-    alert(JSON.stringify(values, null, 2));
-  };
+  const [isLoading, setIsLoading] = useState(false);
 
   return (
     <Box>
@@ -72,7 +95,9 @@ const FormContainer: React.FC = () => {
           validateOnBlur={false}
           validateOnChange={false}
           onSubmit={(values, { resetForm }) => {
-            handleSubmit(values);
+            setIsLoading(true);
+            postData(values);
+            setIsLoading(false);
             resetForm({
               values: {
                 name: "",
@@ -82,7 +107,7 @@ const FormContainer: React.FC = () => {
             });
           }}
         >
-          {(formikProps) => <Form {...formikProps} />}
+          {(formikProps) => <Form {...formikProps} isLoading={isLoading} />}
         </Formik>
       </Box>
     </Box>

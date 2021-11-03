@@ -14,8 +14,12 @@ import {
 } from "@chakra-ui/react";
 
 import { FormValues } from "./FormContainer";
-interface FormProps extends FormikProps<FormValues> {}
+interface FormProps extends FormikProps<FormValues> {
+  isLoading: boolean;
+}
 
+// each field's render is being separated for easier access, future debugging
+// shares props with Field parent
 const renderNameField = ({ field, form }: FieldProps) => {
   return (
     <FormControl isInvalid={!!form.errors.name}>
@@ -98,7 +102,7 @@ const renderBreadSlicesField = ({ field, form }: FieldProps) => {
   )
 }
 
-const Form: React.FC<FormProps> = ({ handleSubmit, values }) => {
+const Form: React.FC<FormProps> = ({ handleSubmit, values, isLoading }) => {
   return (
     <form onSubmit={handleSubmit}>
       <Box mb={4}>
@@ -132,6 +136,7 @@ const Form: React.FC<FormProps> = ({ handleSubmit, values }) => {
       )}
       <Button
         colorScheme="red"
+        isLoading={isLoading}
         onClick={() => handleSubmit}
         type="submit"
         width="100%"
